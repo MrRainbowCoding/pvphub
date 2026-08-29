@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVP Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,800&display=swap');
+
+        :root {
+            --bg-body: #0b0d14;
+            --bg-card: #151822;
+            --bg-row: #181b26;
+            --bg-row-hover: #1f2330;
+            --border-color: #262a38;
+            --text-main: #ffffff;
+            --text-muted: #8b92a5;
+            --accent-gold: #f5a623;
+            --rank1-bg: #e6a822;
+            --rank2-bg: #a8b2c1;
+            --rank3-bg: #b87333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #0d0f17;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            font-style: italic;
+            background: linear-gradient(90deg, #4ade80, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .nav-links span { cursor: pointer; }
+        .nav-links span:hover { color: var(--text-main); }
+        .search-bar {
+            margin-left: auto;
+            background-color: #1a1d29;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            background-color: #12141c;
+        }
+        .tab {
+            padding: 20px 15px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab.active {
+            color: var(--text-main);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        .tab-icon { font-size: 16px; }
+
+        /* Table Header */
+        .table-header {
+            display: grid;
+            grid-template-columns: 60px 300px 100px 1fr;
+            padding: 15px 20px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Rows */
+        .row {
+            display: grid;
+            grid-template-columns: 80px 300px 100px 1fr;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: var(--bg-row);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+        .row:hover { background-color: var(--bg-row-hover); }
+
+        /* Rank Column */
+        .rank {
+            font-size: 24px;
+            font-weight: 800;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            padding-left: 10px;
+        }
+        .rank-bg {
+            position: absolute;
+            left: -20px;
+            top: -12px;
+            bottom: -12px;
+            width: 70px;
+            transform: skewX(-15deg);
+            z-index: -1;
+        }
+        .rank-1 .rank-bg { background-color: var(--rank1-bg); }
+        .rank-2 .rank-bg { background-color: var(--rank2-bg); }
+        .rank-3 .rank-bg { background-color: var(--rank3-bg); }
+        
+        .rank-1 .rank, .rank-2 .rank, .rank-3 .rank { color: #fff; }
+
+        /* Player Column */
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #2a2d36;
+            border-radius: 4px;
+        }
+        .player-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .player-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .player-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .title-icon { color: var(--accent-gold); }
+
+        /* Region */
+        .region span {
+            background-color: #2a1818;
+            color: #ef4444;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid #452020;
+        }
+
+        /* Tiers */
+        .tiers {
+            display: flex;
+            gap: 12px;
+        }
+        .tier-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .tier-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #262a38;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        .tier-ht1 { color: #f5a623; }
+        .tier-ht2 { color: #f5a623; }
+        .tier-ht3 { color: #f5a623; opacity: 0.8; }
+        .tier-ht4 { color: #f5a623; opacity: 0.6; }
+        .tier-lt1 { color: #a8b2c1; }
+        .tier-lt2 { color: #a8b2c1; }
+        .tier-lt3 { color: #a8b2c1; opacity: 0.8; }
+        .tier-none { color: #3b3f50; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">PVP Hub</div>
+        <div class="nav-links">
+            <span>⌂ Home</span>
+            <span style="color: white;">🏆 Rankings</span>
+            <span><a href="https://discord.gg/k3dBCPnJ6K">💬 Discords</a></span>
+            <span>📄 API Docs</span>
+        </div>
+        <div class="search-bar">🔍 Search player...</div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active"><span class="tab-icon">🏆</span>Overall</div>
+            <div class="tab"><span class="tab-icon">⚔️</span>LTMs</div>
+            <div class="tab"><span class="tab-icon">💎</span>Vanilla</div>
+            <div class="tab"><span class="tab-icon">❤️</span>UHC</div>
+            <div class="tab"><span class="tab-icon">🧪</span>Pot</div>
+            <div class="tab"><span class="tab-icon">🔥</span>NethOP</div>
+            <div class="tab"><span class="tab-icon">🌍</span>SMP</div>
+            <div class="tab"><span class="tab-icon">🗡️</span>Sword</div>
+            <div class="tab"><span class="tab-icon">🪓</span>Axe</div>
+            <div class="tab"><span class="tab-icon">🔨</span>Mace</div>
+        </div>
+
+        <div class="table-header">
+            <div>#</div>
+            <div>Player[cite: 1]</div>
+            <div>Region</div>
+            <div>Tiers</div>
+        </div>
+
+        <!-- Rank 1: Nitren -->
+        <div class="row rank-1">
+            <div class="rank"><div class="rank-bg"></div>1.</div>
+            <div class="player-info">
+                <div class="avatar"></div>
+                <div class="player-details">
+                    <div class="player-name">Nitren</div>
+                    <div class="player-title">
+                        <span class="title-icon">❖</span> Combat Ace (249 points)
+                    </div>
+                </div>
+            </div>
+            <div class="region"><span>NA</span></div>
+            <div class="tiers">
+                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
+                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht1">HT1</span></div>
+                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht1">HT1</span></div>
+                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt2">LT2</span></div>
+                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-ht3">HT3</span></div>
+                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt2">LT2</span></div>
+                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht2">HT2</span></div>
+                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht4">HT4</span></div>
+            </div>
+        </div>
+
+        <!-- Rank 2: Metalminer1267 -->
+        <div class="row rank-2">
+            <div class="rank"><div class="rank-bg"></div>2.</div>
+            <div class="player-info">
+                <div class="avatar"></div>
+                <div class="player-details">
+                    <div class="player-name">Metalminer1267</div>
+                    <div class="player-title">
+                        <span class="title-icon">❖</span> Combat Specialist (74 points)
+                    </div>
+                </div>
+            </div>
+            <div class="region"><span>NA</span></div>
+            <div class="tiers">
+                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
+                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht3">HT3</span></div>
+                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-none">-</span></div>
+                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-ht2">HT2</span></div>
+                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt3">LT3</span></div>
+                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-ht4">HT4</span></div>
+                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht4">HT4</span></div>
+                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht3">HT3</span></div>
+            </div>
+        </div>
+
+        <!-- Rank 3: TeamUnicornGirl -->
+        <div class="row rank-3">
+            <div class="rank"><div class="rank-bg"></div>3.</div>
+            <div class="player-info">
+                <div class="avatar"></div>
+                <div class="player-details">
+                    <div class="player-name">TeamUnicornGirl</div>
+                    <div class="player-title">
+                        <span class="title-icon">❖</span> Specialist (65 points)
+                    </div>
+                </div>
+            </div>
+            <div class="region"><span>NA</span></div>
+            <div class="tiers">
+                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
+                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt2">LT2</span></div>
+                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
+                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
+                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
+                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
+                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
+                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
