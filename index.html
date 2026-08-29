@@ -19,6 +19,8 @@
             --rank1-bg: #e6a822;
             --rank2-bg: #a8b2c1;
             --rank3-bg: #b87333;
+            --tier4-bg: #4d7cc7;
+            --tier5-bg: #4a4f5e;
         }
 
         body {
@@ -86,6 +88,7 @@
             border-bottom: 1px solid var(--border-color);
             padding: 0 20px;
             background-color: #12141c;
+            overflow-x: auto;
         }
         .tab {
             padding: 20px 15px;
@@ -97,11 +100,13 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
         }
         .tab.active {
             color: var(--text-main);
             border-bottom: 2px solid var(--accent-gold);
         }
+        .tab:hover { color: var(--text-main); }
         .tab-icon { font-size: 16px; }
 
         /* Table Header */
@@ -164,6 +169,7 @@
             height: 40px;
             background-color: #2a2d36;
             border-radius: 4px;
+            flex-shrink: 0;
         }
         .player-details {
             display: flex;
@@ -232,6 +238,61 @@
         .tier-ht5 { color: #f5a623; opacity: 0.4; }
         .tier-retired { color: #5a5f70; font-style: italic; font-size: 9px; }
         .tier-none { color: #3b3f50; }
+
+        /* Tier Grid (per-gamemode view, MCTiers style) */
+        .tier-grid {
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+        }
+        .tier-grid.active {
+            display: grid;
+        }
+        .tier-col {
+            border-right: 1px solid var(--border-color);
+        }
+        .tier-col:last-child { border-right: none; }
+        .tier-col-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 10px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .tier-col-header .trophy { font-size: 15px; }
+        .tier1-header { background-color: #b5860f; }
+        .tier2-header { background-color: #6b7280; }
+        .tier3-header { background-color: #a05a2c; }
+        .tier4-header { background-color: var(--tier4-bg); }
+        .tier5-header { background-color: var(--tier5-bg); }
+
+        .tier-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-row);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tier-player:hover { background-color: var(--bg-row-hover); }
+        .tier-player .avatar { width: 24px; height: 24px; border-radius: 3px; }
+        .tier-player .high-badge {
+            margin-left: auto;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            opacity: 0.7;
+        }
+        .tier-empty {
+            padding: 16px 14px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -246,226 +307,326 @@
     </div>
 
     <div class="container">
-        <div class="tabs">
-            <div class="tab active"><span class="tab-icon">🏆</span>Overall</div>
-            <div class="tab"><span class="tab-icon">⚔️</span>LTMs</div>
-            <div class="tab"><span class="tab-icon">💎</span>Vanilla</div>
-            <div class="tab"><span class="tab-icon">❤️</span>UHC</div>
-            <div class="tab"><span class="tab-icon">🧪</span>Pot</div>
-            <div class="tab"><span class="tab-icon">🔥</span>NethOP</div>
-            <div class="tab"><span class="tab-icon">🌍</span>SMP</div>
-            <div class="tab"><span class="tab-icon">🗡️</span>Sword</div>
-            <div class="tab"><span class="tab-icon">🪓</span>Axe</div>
-            <div class="tab"><span class="tab-icon">🔨</span>Mace</div>
+        <div class="tabs" id="tabs">
+            <div class="tab active" data-mode="overall"><span class="tab-icon">🏆</span>Overall</div>
+            <div class="tab" data-mode="ltms"><span class="tab-icon">⚔️</span>LTMs</div>
+            <div class="tab" data-mode="vanilla"><span class="tab-icon">💎</span>Vanilla</div>
+            <div class="tab" data-mode="uhc"><span class="tab-icon">❤️</span>UHC</div>
+            <div class="tab" data-mode="pot"><span class="tab-icon">🧪</span>Pot</div>
+            <div class="tab" data-mode="nethop"><span class="tab-icon">🔥</span>NethOP</div>
+            <div class="tab" data-mode="smp"><span class="tab-icon">🌍</span>SMP</div>
+            <div class="tab" data-mode="sword"><span class="tab-icon">🗡️</span>Sword</div>
+            <div class="tab" data-mode="axe"><span class="tab-icon">🪓</span>Axe</div>
+            <div class="tab" data-mode="mace"><span class="tab-icon">🔨</span>Mace</div>
         </div>
 
-        <div class="table-header">
-            <div>#</div>
-            <div>Player[cite: 1]</div>
-            <div>Region</div>
-            <div>Tiers</div>
-        </div>
+        <!-- OVERALL VIEW -->
+        <div id="overall-view">
+            <div class="table-header">
+                <div>#</div>
+                <div>Player</div>
+                <div>Region</div>
+                <div>Tiers</div>
+            </div>
 
-        <!-- Rank 1: Nitren -->
-        <div class="row rank-1">
-            <div class="rank"><div class="rank-bg"></div>1.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">Nitren</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Combat Ace (249 points)
+            <!-- Rank 1: Nitren -->
+            <div class="row rank-1">
+                <div class="rank"><div class="rank-bg"></div>1.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">Nitren</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Combat Ace (249 points)
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht1">HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht1">HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt2">LT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt2">LT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht2">HT2</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht4">HT4</span></div>
-            </div>
-        </div>
-
-        <!-- Rank 2: Metalminer1267 -->
-        <div class="row rank-2">
-            <div class="rank"><div class="rank-bg"></div>2.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">Metalminer1267</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Combat Specialist (74 points)
-                    </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht1">HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht1">HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt2">LT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt2">LT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht2">HT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht4">HT4</span></div>
                 </div>
             </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-ht2">HT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt3">LT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-ht4">HT4</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht4">HT4</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht3">HT3</span></div>
-            </div>
-        </div>
 
-        <!-- Rank 3: TeamUnicornGirl -->
-        <div class="row rank-3">
-            <div class="rank"><div class="rank-bg"></div>3.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">TeamUnicornGirl</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Specialist (65 points)
+            <!-- Rank 2: Metalminer1267 -->
+            <div class="row rank-2">
+                <div class="rank"><div class="rank-bg"></div>2.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">Metalminer1267</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Combat Specialist (74 points)
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt2">LT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-            </div>
-        </div>
-
-        <!-- Rank 4: Zapattack123 -->
-        <div class="row">
-            <div class="rank">4.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">Zapattack123</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Cadet (20 points)
-                    </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-ht2">HT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt3">LT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-ht4">HT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht4">HT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht3">HT3</span></div>
                 </div>
             </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-            </div>
-        </div>
 
-        <!-- Rank 5: Lazygiraffe2197 -->
-        <div class="row">
-            <div class="rank">5.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">Lazygiraffe2197</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Combat Novice (10 points)
+            <!-- Rank 3: TeamUnicornGirl -->
+            <div class="row rank-3">
+                <div class="rank"><div class="rank-bg"></div>3.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">TeamUnicornGirl</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Specialist (65 points)
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht4">HT4</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-lt5">LT5</span></div>
-            </div>
-        </div>
-
-        <!-- Rank 6: MrRainbowoffical -->
-        <div class="row">
-            <div class="rank">6.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">MrRainbowoffical</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Novice (9 points)
-                    </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt2">LT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
                 </div>
             </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt4">LT4</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-            </div>
-        </div>
 
-        <!-- Rank 7: Rorom2012 -->
-        <div class="row">
-            <div class="rank">7.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">Rorom2012</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Rookie (6 points)
+            <!-- Rank 4: Zapattack123 -->
+            <div class="row">
+                <div class="rank">4.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">Zapattack123</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Cadet (20 points)
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT3</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht5">HT5</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-lt5">LT5</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht5">HT5</span></div>
-            </div>
-        </div>
-
-        <!-- Rank 8: ReptileEmperor -->
-        <div class="row">
-            <div class="rank">8.</div>
-            <div class="player-info">
-                <div class="avatar"></div>
-                <div class="player-details">
-                    <div class="player-name">ReptileEmperor</div>
-                    <div class="player-title">
-                        <span class="title-icon">❖</span> Retired (0 points)
-                    </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
                 </div>
             </div>
-            <div class="region"><span>NA</span></div>
-            <div class="tiers">
-                <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-retired">R-HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-retired">R-HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-retired">R-HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-retired">R-LT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-retired">R-LT2</span></div>
-                <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-retired">R-HT1</span></div>
-                <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-retired">R-HT1</span></div>
+
+            <!-- Rank 5: Lazygiraffe2197 -->
+            <div class="row">
+                <div class="rank">5.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">Lazygiraffe2197</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Combat Novice (10 points)
+                        </div>
+                    </div>
+                </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht4">HT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-lt5">LT5</span></div>
+                </div>
+            </div>
+
+            <!-- Rank 6: MrRainbowoffical -->
+            <div class="row">
+                <div class="rank">6.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">MrRainbowoffical</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Novice (9 points)
+                        </div>
+                    </div>
+                </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt4">LT4</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
+                </div>
+            </div>
+
+            <!-- Rank 7: Rorom2012 -->
+            <div class="row">
+                <div class="rank">7.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">Rorom2012</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Rookie (6 points)
+                        </div>
+                    </div>
+                </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT3</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht5">HT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-lt5">LT5</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht5">HT5</span></div>
+                </div>
+            </div>
+
+            <!-- Rank 8: ReptileEmperor -->
+            <div class="row">
+                <div class="rank">8.</div>
+                <div class="player-info">
+                    <div class="avatar"></div>
+                    <div class="player-details">
+                        <div class="player-name">ReptileEmperor</div>
+                        <div class="player-title">
+                            <span class="title-icon">❖</span> Retired (0 points)
+                        </div>
+                    </div>
+                </div>
+                <div class="region"><span>NA</span></div>
+                <div class="tiers">
+                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-retired">R-HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-retired">R-HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-retired">R-HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-retired">R-LT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-retired">R-LT2</span></div>
+                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-retired">R-HT1</span></div>
+                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-retired">R-HT1</span></div>
+                </div>
             </div>
         </div>
 
+        <!-- PER-GAMEMODE TIER GRID VIEW -->
+        <div class="tier-grid" id="tier-view">
+            <div class="tier-col">
+                <div class="tier-col-header tier1-header"><span class="trophy">🏆</span>Tier 1</div>
+                <div id="col-tier1"></div>
+            </div>
+            <div class="tier-col">
+                <div class="tier-col-header tier2-header"><span class="trophy">🏆</span>Tier 2</div>
+                <div id="col-tier2"></div>
+            </div>
+            <div class="tier-col">
+                <div class="tier-col-header tier3-header"><span class="trophy">🏆</span>Tier 3</div>
+                <div id="col-tier3"></div>
+            </div>
+            <div class="tier-col">
+                <div class="tier-col-header tier4-header"><span class="trophy">🏆</span>Tier 4</div>
+                <div id="col-tier4"></div>
+            </div>
+            <div class="tier-col">
+                <div class="tier-col-header tier5-header"><span class="trophy">🏆</span>Tier 5</div>
+                <div id="col-tier5"></div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Per-player, per-gamemode tier data. "-" = untested/no rank in that mode.
+        // "R-" prefix = retired rank (excluded from live tier columns).
+        const players = [
+            { name: "Nitren",           sword: "LT1", axe: "HT1", mace: "HT1", uhc: "LT2", nethop: "HT3", pot: "LT2", smp: "HT2", vanilla: "HT4" },
+            { name: "Metalminer1267",   sword: "HT3", axe: "HT3", mace: "-",   uhc: "HT2", nethop: "LT3", pot: "HT4", smp: "HT4", vanilla: "HT3" },
+            { name: "TeamUnicornGirl",  sword: "LT1", axe: "LT2", mace: "HT3", uhc: "-",   nethop: "-",   pot: "-",   smp: "-",   vanilla: "-" },
+            { name: "Zapattack123",     sword: "HT3", axe: "-",   mace: "HT3", uhc: "-",   nethop: "-",   pot: "-",   smp: "-",   vanilla: "-" },
+            { name: "Lazygiraffe2197",  sword: "LT4", axe: "HT4", mace: "LT5", uhc: "LT5", nethop: "-",   pot: "-",   smp: "-",   vanilla: "LT5" },
+            { name: "MrRainbowoffical", sword: "LT4", axe: "LT4", mace: "LT5", uhc: "LT5", nethop: "LT5", pot: "-",   smp: "-",   vanilla: "-" },
+            { name: "Rorom2012",        sword: "R-HT3", axe: "-", mace: "HT5", uhc: "-",   nethop: "LT5", pot: "LT5", smp: "LT5", vanilla: "HT5" },
+            { name: "ReptileEmperor",   sword: "R-HT1", axe: "R-HT1", mace: "R-HT1", uhc: "R-HT1", nethop: "R-LT2", pot: "R-LT2", smp: "R-HT1", vanilla: "R-HT1" },
+        ];
+
+        const tabs = document.querySelectorAll(".tab");
+        const overallView = document.getElementById("overall-view");
+        const tierView = document.getElementById("tier-view");
+
+        function renderTierGrid(mode) {
+            for (let t = 1; t <= 5; t++) {
+                document.getElementById("col-tier" + t).innerHTML = "";
+            }
+
+            // LTMs has no source data yet
+            if (mode === "ltms") {
+                document.getElementById("col-tier1").innerHTML = '<div class="tier-empty">No LTM data yet</div>';
+                return;
+            }
+
+            const byTier = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+
+            players.forEach(p => {
+                const val = p[mode];
+                if (!val || val === "-" || val.startsWith("R-")) return; // skip untested/retired
+                const isHigh = val.startsWith("HT");
+                const tierNum = parseInt(val.slice(2));
+                byTier[tierNum].push({ name: p.name, high: isHigh });
+            });
+
+            for (let t = 1; t <= 5; t++) {
+                const col = document.getElementById("col-tier" + t);
+                const list = byTier[t].sort((a, b) => (b.high - a.high));
+                if (list.length === 0) {
+                    col.innerHTML = '<div class="tier-empty">No players</div>';
+                    continue;
+                }
+                list.forEach(entry => {
+                    const row = document.createElement("div");
+                    row.className = "tier-player";
+                    row.innerHTML = '<div class="avatar"></div><span>' + entry.name + '</span>' +
+                        (entry.high ? '<span class="high-badge">HIGH</span>' : '');
+                    col.appendChild(row);
+                });
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                tabs.forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                const mode = tab.dataset.mode;
+
+                if (mode === "overall") {
+                    overallView.style.display = "";
+                    tierView.classList.remove("active");
+                } else {
+                    overallView.style.display = "none";
+                    tierView.classList.add("active");
+                    renderTierGrid(mode);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
