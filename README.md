@@ -1,1 +1,1 @@
-# PVP HQ
+# PVP Hub
