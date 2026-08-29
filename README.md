@@ -17,4 +17,4 @@ Set `MASTER_PASSWORD` before the first run in production. The master can create 
 
 The public leaderboard data is also available at `/data/leaderboards.json`. Account storage remains private in the root `data/users.json` file; do not place it under `public`.
 
-Netlify account management uses Netlify Blobs through `netlify/functions/api.mjs`. Enable Netlify Blobs for the site and set the `MASTER_PASSWORD` environment variable before deploying. The function creates the initial `admin` account in the `pvp-hub` store on its first request.
+Netlify account management uses Netlify Blobs through `netlify/functions/api.mjs`. Add these environment variables in Netlify before deploying: `NETLIFY_SITE_ID`, `NETLIFY_AUTH_TOKEN`, and `MASTER_PASSWORD`. The function creates the initial `admin` account in the `pvp-hub` store on its first request. Use a Netlify personal access token for `NETLIFY_AUTH_TOKEN`; never commit it to the repository.

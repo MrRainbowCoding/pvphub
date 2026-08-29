@@ -3,7 +3,11 @@ import crypto from "node:crypto";
 import leaderboardData from "../../public/data/leaderboards.json" with { type: "json" };
 
 const sessions = new Map();
-const store = getStore("pvp-hub");
+const store = getStore({
+  name: "pvp-hub",
+  siteID: process.env.NETLIFY_SITE_ID,
+  token: process.env.NETLIFY_AUTH_TOKEN
+});
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
   return `scrypt$${salt}$${crypto.scryptSync(password, salt, 64).toString("hex")}`;
@@ -64,6 +68,7 @@ export async function handler(event) {
   return response(404, { error: "API route not found" });
  } catch (error) {
   console.error("PVP Hub API error", error);
-  return response(500, { error: "Account service is unavailable. Check Netlify Blobs configuration." });
+  const message = error.name === "MissingBlobsEnvironmentError" ? "Account service is not configured. Add NETLIFY_SITE_ID and NETLIFY_AUTH_TOKEN in Netlify." : "Account service is unavailable.";
+  return response(500, { error: message });
  }
 }
