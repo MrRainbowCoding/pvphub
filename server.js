@@ -25,6 +25,8 @@ ensureMaster();
 const server = http.createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://${request.headers.host}`);
+    if (url.pathname === "/data/leaderboards.json" && request.method === "GET") return send(response, 200, readJson(leaderboardFile), { "Cache-Control": "no-store" });
+    if (url.pathname === "/data/users.json" || url.pathname.startsWith("/data/")) return send(response, 403, { error: "Private data file" });
     if (url.pathname === "/api/leaderboards" && request.method === "GET") return send(response, 200, readJson(leaderboardFile));
     if (url.pathname === "/api/me" && request.method === "GET") return send(response, 200, { user: userFromRequest(request) });
     if (url.pathname === "/api/login" && request.method === "POST") { const input = await body(request); const user = readJson(usersFile).find(item => item.username === input.username); if (!user || !passwordMatches(input.password || "", user.password)) return send(response, 401, { error: "Invalid username or password" }); const token = crypto.randomBytes(32).toString("hex"); sessions.set(token, { username: user.username, role: user.role }); return send(response, 200, { user: { username: user.username, role: user.role } }, { "Set-Cookie": `session=${token}; HttpOnly; SameSite=Strict; Path=/` }); }
