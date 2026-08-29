@@ -1,0 +1,13 @@
+{
+  "name": "pvp-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JSON-backed PVP rankings with editor accounts",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

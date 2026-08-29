@@ -1,0 +1,12 @@
+[
+  {
+    "username": "admin",
+    "role": "master",
+    "password": "scrypt$a0b2a307defeae840e4e6c8c60e540c5$fb3088904c20eaa03e372a46802a03a9c238a8a1de22e317846163c65d563c9b8109999a5920f90d429b36ffeb81201268eb99604f030aca98304533e1ffd85a"
+  },
+  {
+    "username": "nitren",
+    "role": "editor",
+    "password": "scrypt$f01d2e9ef71ca8ea75696a08e8324760$35ca0519fb453b0f244c2ea2ac889005cdefa620b7002e63d8cbb337cd99d3f9ffd774d2122e8eda89a19a118171b6cadb15f31c7211f9c8e660f6587ef82b06"
+  }
+]
