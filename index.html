@@ -170,6 +170,8 @@
             background-color: #2a2d36;
             border-radius: 4px;
             flex-shrink: 0;
+            object-fit: cover;
+            image-rendering: pixelated;
         }
         .player-details {
             display: flex;
@@ -279,7 +281,7 @@
             font-weight: 600;
         }
         .tier-player:hover { background-color: var(--bg-row-hover); }
-        .tier-player .avatar { width: 24px; height: 24px; border-radius: 3px; }
+        .tier-player .avatar { width: 24px; height: 24px; border-radius: 3px; object-fit: cover; image-rendering: pixelated; }
         .tier-player .high-badge {
             margin-left: auto;
             font-size: 9px;
@@ -333,7 +335,7 @@
             <div class="row rank-1">
                 <div class="rank"><div class="rank-bg"></div>1.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/Nitren/40" alt="Nitren">
                     <div class="player-details">
                         <div class="player-name">Nitren</div>
                         <div class="player-title">
@@ -358,7 +360,7 @@
             <div class="row rank-2">
                 <div class="rank"><div class="rank-bg"></div>2.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/Metalminer1267/40" alt="Metalminer1267">
                     <div class="player-details">
                         <div class="player-name">Metalminer1267</div>
                         <div class="player-title">
@@ -383,7 +385,7 @@
             <div class="row rank-3">
                 <div class="rank"><div class="rank-bg"></div>3.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/TeamUnicornGirl/40" alt="TeamUnicornGirl">
                     <div class="player-details">
                         <div class="player-name">TeamUnicornGirl</div>
                         <div class="player-title">
@@ -408,7 +410,7 @@
             <div class="row">
                 <div class="rank">4.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/Zapattack123/40" alt="Zapattack123">
                     <div class="player-details">
                         <div class="player-name">Zapattack123</div>
                         <div class="player-title">
@@ -433,7 +435,7 @@
             <div class="row">
                 <div class="rank">5.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/Lazygiraffe2197/40" alt="Lazygiraffe2197">
                     <div class="player-details">
                         <div class="player-name">Lazygiraffe2197</div>
                         <div class="player-title">
@@ -458,7 +460,7 @@
             <div class="row">
                 <div class="rank">6.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/MrRainbowoffical/40" alt="MrRainbowoffical">
                     <div class="player-details">
                         <div class="player-name">MrRainbowoffical</div>
                         <div class="player-title">
@@ -483,7 +485,7 @@
             <div class="row">
                 <div class="rank">7.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/Rorom2012/40" alt="Rorom2012">
                     <div class="player-details">
                         <div class="player-name">Rorom2012</div>
                         <div class="player-title">
@@ -508,7 +510,7 @@
             <div class="row">
                 <div class="rank">8.</div>
                 <div class="player-info">
-                    <div class="avatar"></div>
+                    <img class="avatar" src="https://mc-heads.net/avatar/ReptileEmperor/40" alt="ReptileEmperor">
                     <div class="player-details">
                         <div class="player-name">ReptileEmperor</div>
                         <div class="player-title">
@@ -604,7 +606,7 @@
                 list.forEach(entry => {
                     const row = document.createElement("div");
                     row.className = "tier-player";
-                    row.innerHTML = '<div class="avatar"></div><span>' + entry.name + '</span>' +
+                    row.innerHTML = '<img class="avatar" src="https://mc-heads.net/avatar/' + entry.name + '/24" alt="' + entry.name + '"><span>' + entry.name + '</span>' +
                         (entry.high ? '<span class="high-badge">HIGH</span>' : '');
                     col.appendChild(row);
                 });
