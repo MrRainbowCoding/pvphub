@@ -1,634 +1,758 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PVP Hub</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PVP Hub — Rankings</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,800&display=swap');
 
-        :root {
-            --bg-body: #0b0d14;
-            --bg-card: #151822;
-            --bg-row: #181b26;
-            --bg-row-hover: #1f2330;
-            --border-color: #262a38;
-            --text-main: #ffffff;
-            --text-muted: #8b92a5;
-            --accent-gold: #f5a623;
-            --rank1-bg: #e6a822;
-            --rank2-bg: #a8b2c1;
-            --rank3-bg: #b87333;
-            --tier4-bg: #4d7cc7;
-            --tier5-bg: #4a4f5e;
-        }
+    :root {
+        --bg-body: #0b0d14;
+        --bg-card: #151822;
+        --bg-row: #181b26;
+        --bg-row-hover: #1f2330;
+        --border-color: #262a38;
+        --text-main: #ffffff;
+        --text-muted: #8b92a5;
+        --accent-gold: #f5a623;
+        --rank1-bg: #e6a822;
+        --rank2-bg: #a8b2c1;
+        --rank3-bg: #b87333;
+        --tier4-bg: #4d7cc7;
+        --tier5-bg: #4a4f5e;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-        }
+    * { box-sizing: border-box; }
 
-        /* Navbar */
-        .navbar {
-            display: flex;
-            align-items: center;
-            padding: 15px 40px;
-            background-color: #0d0f17;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            font-style: italic;
-            background: linear-gradient(90deg, #9e4ade, #fffffe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-right: 40px;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .nav-links span { cursor: pointer; }
-        .nav-links span:hover { color: var(--text-main); }
-        .search-bar {
-            margin-left: auto;
-            background-color: #1a1d29;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: var(--text-muted);
-            font-size: 13px;
-        }
+    a { text-decoration: none; color: inherit; }
 
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
+    /* Navbar */
+    .navbar {
+        display: flex;
+        align-items: center;
+        padding: 15px 40px;
+        background-color: #0d0f17;
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .logo {
+        font-size: 24px;
+        font-weight: 800;
+        font-style: italic;
+        background: linear-gradient(90deg, #9e4ade, #fffffe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 40px;
+    }
+    .nav-links {
+        display: flex;
+        gap: 25px;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .nav-links span { cursor: pointer; }
+    .nav-links span:hover { color: var(--text-main); }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 20px;
-            background-color: #12141c;
-            overflow-x: auto;
-        }
-        .tab {
-            padding: 20px 15px;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-        .tab.active {
-            color: var(--text-main);
-            border-bottom: 2px solid var(--accent-gold);
-        }
-        .tab:hover { color: var(--text-main); }
-        .tab-icon { font-size: 16px; }
+    .search-wrap {
+        margin-left: auto;
+        position: relative;
+    }
+    .search-input {
+        background-color: #1a1d29;
+        border: 1px solid var(--border-color);
+        padding: 8px 16px 8px 34px;
+        border-radius: 20px;
+        color: var(--text-main);
+        font-size: 13px;
+        font-family: inherit;
+        width: 220px;
+        outline: none;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--accent-gold); }
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 13px;
+        pointer-events: none;
+    }
+    .search-clear {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: var(--text-muted);
+        cursor: pointer;
+        display: none;
+    }
 
-        /* Table Header */
-        .table-header {
-            display: grid;
-            grid-template-columns: 60px 300px 100px 1fr;
-            padding: 15px 20px;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border-color);
-        }
+    /* Main Container */
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background-color: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
 
-        /* Rows */
-        .row {
-            display: grid;
-            grid-template-columns: 80px 300px 100px 1fr;
-            align-items: center;
-            padding: 12px 20px;
-            background-color: var(--bg-row);
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s;
-        }
-        .row:hover { background-color: var(--bg-row-hover); }
+    /* Tabs */
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0 20px;
+        background-color: #12141c;
+        overflow-x: auto;
+    }
+    .tab {
+        padding: 20px 15px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+    .tab.active {
+        color: var(--text-main);
+        border-bottom: 2px solid var(--accent-gold);
+    }
+    .tab:hover { color: var(--text-main); }
+    .tab-icon { font-size: 16px; }
 
-        /* Rank Column */
-        .rank {
-            font-size: 24px;
-            font-weight: 800;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-            padding-left: 10px;
-        }
-        .rank-bg {
-            position: absolute;
-            left: -20px;
-            top: -12px;
-            bottom: -12px;
-            width: 70px;
-            transform: skewX(-15deg);
-            z-index: -1;
-        }
-        .rank-1 .rank-bg { background-color: var(--rank1-bg); }
-        .rank-2 .rank-bg { background-color: var(--rank2-bg); }
-        .rank-3 .rank-bg { background-color: var(--rank3-bg); }
-        
-        .rank-1 .rank, .rank-2 .rank, .rank-3 .rank { color: #fff; }
+    /* Table Header */
+    .table-header {
+        display: grid;
+        grid-template-columns: 60px 300px 100px 1fr;
+        padding: 15px 20px;
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--border-color);
+    }
 
-        /* Player Column */
-        .player-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #2a2d36;
-            border-radius: 4px;
-            flex-shrink: 0;
-            object-fit: cover;
-            image-rendering: pixelated;
-        }
-        .player-details {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .player-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
-        .player-title {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .title-icon { color: var(--accent-gold); }
+    /* Rows */
+    .row {
+        display: grid;
+        grid-template-columns: 80px 300px 100px 1fr;
+        align-items: center;
+        padding: 12px 20px;
+        background-color: var(--bg-row);
+        border-bottom: 1px solid var(--border-color);
+        transition: background 0.2s;
+        cursor: pointer;
+    }
+    .row:hover { background-color: var(--bg-row-hover); }
+    .row.hidden-row { display: none; }
 
-        /* Region */
-        .region span {
-            background-color: #2a1818;
-            color: #ef4444;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            border: 1px solid #452020;
-        }
+    .rank {
+        font-size: 24px;
+        font-weight: 800;
+        font-style: italic;
+        position: relative;
+        z-index: 1;
+        padding-left: 10px;
+    }
+    .rank-bg {
+        position: absolute;
+        left: -20px;
+        top: -12px;
+        bottom: -12px;
+        width: 70px;
+        transform: skewX(-15deg);
+        z-index: -1;
+    }
+    .rank-1 .rank-bg { background-color: var(--rank1-bg); }
+    .rank-2 .rank-bg { background-color: var(--rank2-bg); }
+    .rank-3 .rank-bg { background-color: var(--rank3-bg); }
+    .rank-1 .rank, .rank-2 .rank, .rank-3 .rank { color: #fff; }
 
-        /* Tiers */
-        .tiers {
-            display: flex;
-            gap: 12px;
-        }
-        .tier-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .tier-icon {
-            width: 20px;
-            height: 20px;
-            background-color: #262a38;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-        }
-        .buttonActive {
-            color: #fff;
-        }
-        .tier-ht1 { color: #f5a623; }
-        .tier-ht2 { color: #f5a623; }
-        .tier-ht3 { color: #f5a623; opacity: 0.8; }
-        .tier-ht4 { color: #f5a623; opacity: 0.6; }
-        .tier-lt1 { color: #a8b2c1; }
-        .tier-lt2 { color: #a8b2c1; }
-        .tier-lt3 { color: #a8b2c1; opacity: 0.8; }
-        .tier-lt4 { color: #a8b2c1; opacity: 0.6; }
-        .tier-lt5 { color: #a8b2c1; opacity: 0.4; }
-        .tier-ht5 { color: #f5a623; opacity: 0.4; }
-        .tier-retired { color: #5a5f70; font-style: italic; font-size: 9px; }
-        .tier-none { color: #3b3f50; }
+    .player-info { display: flex; align-items: center; gap: 15px; }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        background-color: #2a2d36;
+        border-radius: 4px;
+        flex-shrink: 0;
+        object-fit: cover;
+        image-rendering: pixelated;
+    }
+    .player-details { display: flex; flex-direction: column; gap: 4px; }
+    .player-name { font-size: 16px; font-weight: 700; }
+    .row:hover .player-name { color: var(--accent-gold); }
+    .player-title {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .title-icon { color: var(--accent-gold); }
 
-        /* Tier Grid (per-gamemode view, MCTiers style) */
-        .tier-grid {
-            display: none;
-            grid-template-columns: repeat(5, 1fr);
-        }
-        .tier-grid.active {
-            display: grid;
-        }
-        .tier-col {
-            border-right: 1px solid var(--border-color);
-        }
-        .tier-col:last-child { border-right: none; }
-        .tier-col-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 16px 10px;
-            font-size: 16px;
-            font-weight: 800;
-            color: #fff;
-        }
-        .tier-col-header .trophy { font-size: 15px; }
-        .tier1-header { background-color: #b5860f; }
-        .tier2-header { background-color: #6b7280; }
-        .tier3-header { background-color: #a05a2c; }
-        .tier4-header { background-color: var(--tier4-bg); }
-        .tier5-header { background-color: var(--tier5-bg); }
+    .region span {
+        background-color: #2a1818;
+        color: #ef4444;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid #452020;
+    }
 
-        .tier-player {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--bg-row);
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .tier-player:hover { background-color: var(--bg-row-hover); }
-        .tier-player .avatar { width: 24px; height: 24px; border-radius: 3px; object-fit: cover; image-rendering: pixelated; }
-        .tier-player .high-badge {
-            margin-left: auto;
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            opacity: 0.7;
-        }
-        .tier-empty {
-            padding: 16px 14px;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-style: italic;
-        }
-    </style>
+    .tiers { display: flex; gap: 12px; flex-wrap: wrap; }
+    .tier-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+    .tier-icon {
+        width: 20px;
+        height: 20px;
+        background-color: #262a38;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+    }
+    .tier-ht1, .tier-ht2 { color: #f5a623; }
+    .tier-ht3 { color: #f5a623; opacity: 0.8; }
+    .tier-ht4 { color: #f5a623; opacity: 0.6; }
+    .tier-ht5 { color: #f5a623; opacity: 0.4; }
+    .tier-lt1, .tier-lt2 { color: #a8b2c1; }
+    .tier-lt3 { color: #a8b2c1; opacity: 0.8; }
+    .tier-lt4 { color: #a8b2c1; opacity: 0.6; }
+    .tier-lt5 { color: #a8b2c1; opacity: 0.4; }
+    .tier-retired { color: #5a5f70; font-style: italic; font-size: 9px; }
+    .tier-none { color: #3b3f50; }
+
+    /* Tier Grid (per-gamemode view) */
+    .tier-grid { display: none; grid-template-columns: repeat(5, 1fr); }
+    .tier-grid.active { display: grid; }
+    .tier-col { border-right: 1px solid var(--border-color); }
+    .tier-col:last-child { border-right: none; }
+    .tier-col-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 10px;
+        font-size: 16px;
+        font-weight: 800;
+        color: #fff;
+    }
+    .tier1-header { background-color: #b5860f; }
+    .tier2-header { background-color: #6b7280; }
+    .tier3-header { background-color: #a05a2c; }
+    .tier4-header { background-color: var(--tier4-bg); }
+    .tier5-header { background-color: var(--tier5-bg); }
+
+    .tier-player {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--bg-row);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .tier-player:hover { background-color: var(--bg-row-hover); color: var(--accent-gold); }
+    .tier-player.hidden-row { display: none; }
+    .tier-player .avatar { width: 24px; height: 24px; border-radius: 3px; }
+    .tier-player .high-badge {
+        margin-left: auto;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--accent-gold);
+        opacity: 0.7;
+    }
+    .tier-empty { padding: 16px 14px; color: var(--text-muted); font-size: 12px; font-style: italic; }
+
+    .no-results {
+        padding: 40px 20px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 14px;
+        display: none;
+    }
+    .no-results.show { display: block; }
+
+    /* Modal */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 6, 10, 0.75);
+        z-index: 100;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 60px 20px;
+        overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        max-width: 640px;
+        width: 100%;
+        overflow: hidden;
+    }
+    .modal-header {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 28px 28px 20px;
+        background: linear-gradient(135deg, #1a1d29, #12141c);
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
+    }
+    .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #1f2330;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-close:hover { color: #fff; background: #2a2f40; }
+    .modal-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 10px;
+        object-fit: cover;
+        image-rendering: pixelated;
+        border: 2px solid var(--border-color);
+    }
+    .modal-name { font-size: 24px; font-weight: 800; }
+    .modal-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+        font-size: 13px;
+        color: var(--accent-gold);
+        font-weight: 700;
+    }
+    .modal-region {
+        margin-top: 8px;
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background-color: var(--border-color);
+    }
+    .stat-box {
+        background-color: var(--bg-card);
+        padding: 16px 10px;
+        text-align: center;
+    }
+    .stat-value { font-size: 22px; font-weight: 800; }
+    .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+    .modal-section { padding: 22px 28px; border-bottom: 1px solid var(--border-color); }
+    .modal-section:last-child { border-bottom: none; }
+    .modal-section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+    }
+
+    .title-ladder { display: flex; flex-direction: column; gap: 6px; }
+    .title-rung {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--text-muted);
+    }
+    .title-rung.current {
+        background-color: rgba(245, 166, 35, 0.12);
+        color: var(--accent-gold);
+        font-weight: 700;
+        border: 1px solid rgba(245, 166, 35, 0.35);
+    }
+
+    .modal-tiers {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+    .modal-tier-item {
+        background-color: var(--bg-row);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+    }
+    .modal-tier-item .mode-icon { font-size: 16px; }
+    .modal-tier-item .mode-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+    .modal-tier-item .mode-val { font-size: 13px; font-weight: 700; margin-top: 4px; }
+</style>
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="logo">PVP Hub</div>
-        <div class="nav-links">
-            <span class="buttonActive"><a href="index.html">🏆 Rankings</a></span>
-            <span><a href="https://discord.gg/k3dBCPnJ6K">💬 Discord</a></span>
-        </div>
-        <div class="search-bar">🔍 Search player...</div>
+<div class="navbar">
+    <div class="logo">PVP Hub</div>
+    <div class="nav-links">
+        <span class="active-link"><a href="index.html">🏆 Rankings</a></span>
+        <span><a href="https://discord.gg/k3dBCPnJ6K">💬 Discord</a></span>
+    </div>
+    <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="search-input" placeholder="Search player...">
+        <span class="search-clear" id="search-clear">✕</span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="tabs" id="tabs">
+        <div class="tab active" data-mode="overall"><span class="tab-icon">🏆</span>Overall</div>
+        <div class="tab" data-mode="ltms"><span class="tab-icon">⚔️</span>LTMs</div>
+        <div class="tab" data-mode="vanilla"><span class="tab-icon">💎</span>Vanilla</div>
+        <div class="tab" data-mode="uhc"><span class="tab-icon">❤️</span>UHC</div>
+        <div class="tab" data-mode="pot"><span class="tab-icon">🧪</span>Pot</div>
+        <div class="tab" data-mode="nethop"><span class="tab-icon">🔥</span>NethOP</div>
+        <div class="tab" data-mode="smp"><span class="tab-icon">🌍</span>SMP</div>
+        <div class="tab" data-mode="sword"><span class="tab-icon">🗡️</span>Sword</div>
+        <div class="tab" data-mode="axe"><span class="tab-icon">🪓</span>Axe</div>
+        <div class="tab" data-mode="mace"><span class="tab-icon">🔨</span>Mace</div>
     </div>
 
-    <div class="container">
-        <div class="tabs" id="tabs">
-            <div class="tab active" data-mode="overall"><span class="tab-icon">🏆</span>Overall</div>
-            <div class="tab" data-mode="ltms"><span class="tab-icon">⚔️</span>LTMs</div>
-            <div class="tab" data-mode="vanilla"><span class="tab-icon">💎</span>Vanilla</div>
-            <div class="tab" data-mode="uhc"><span class="tab-icon">❤️</span>UHC</div>
-            <div class="tab" data-mode="pot"><span class="tab-icon">🧪</span>Pot</div>
-            <div class="tab" data-mode="nethop"><span class="tab-icon">🔥</span>NethOP</div>
-            <div class="tab" data-mode="smp"><span class="tab-icon">🌍</span>SMP</div>
-            <div class="tab" data-mode="sword"><span class="tab-icon">🗡️</span>Sword</div>
-            <div class="tab" data-mode="axe"><span class="tab-icon">🪓</span>Axe</div>
-            <div class="tab" data-mode="mace"><span class="tab-icon">🔨</span>Mace</div>
+    <!-- OVERALL VIEW -->
+    <div id="overall-view">
+        <div class="table-header">
+            <div>#</div>
+            <div>Player</div>
+            <div>Region</div>
+            <div>Tiers</div>
         </div>
-
-        <!-- OVERALL VIEW -->
-        <div id="overall-view">
-            <div class="table-header">
-                <div>#</div>
-                <div>Player</div>
-                <div>Region</div>
-                <div>Tiers</div>
-            </div>
-
-            <!-- Rank 1: _Nitren -->
-            <div class="row rank-1">
-                <div class="rank"><div class="rank-bg"></div>1.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/_Nitren/40" alt="_Nitren">
-                    <div class="player-details">
-                        <div class="player-name">_Nitren</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Combat Ace (249 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht1">HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht1">HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt2">LT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt2">LT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht2">HT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht4">HT4</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 2: Metalminer1267 -->
-            <div class="row rank-2">
-                <div class="rank"><div class="rank-bg"></div>2.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/Metalminer1267/40" alt="Metalminer1267">
-                    <div class="player-details">
-                        <div class="player-name">Metalminer1267</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Combat Specialist (74 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-ht2">HT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt3">LT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-ht4">HT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-ht4">HT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht3">HT3</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 3: TeamUnicornGirl -->
-            <div class="row rank-3">
-                <div class="rank"><div class="rank-bg"></div>3.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/TeamUnicornGirl/40" alt="TeamUnicornGirl">
-                    <div class="player-details">
-                        <div class="player-name">TeamUnicornGirl</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Specialist (65 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt1">LT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt2">LT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 4: Zapattack123 -->
-            <div class="row">
-                <div class="rank">4.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/Zapattack123/40" alt="Zapattack123">
-                    <div class="player-details">
-                        <div class="player-name">Zapattack123</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Cadet (20 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht3">HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 5: Lazygiraffe2197 -->
-            <div class="row">
-                <div class="rank">5.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/Lazygiraffe2197/40" alt="Lazygiraffe2197">
-                    <div class="player-details">
-                        <div class="player-name">Lazygiraffe2197</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Combat Novice (10 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-ht4">HT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-lt5">LT5</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 6: MrRainbowoffical -->
-            <div class="row">
-                <div class="rank">6.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/MrRainbowoffical/40" alt="MrRainbowoffical">
-                    <div class="player-details">
-                        <div class="player-name">MrRainbowoffical</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Novice (9 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-lt4">LT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-lt4">LT4</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-none">-</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 7: Rorom2012 -->
-            <div class="row">
-                <div class="rank">7.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/Rorom2012/40" alt="Rorom2012">
-                    <div class="player-details">
-                        <div class="player-name">Rorom2012</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Rookie (6 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT3</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-ht5">HT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-none">-</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-lt5">LT5</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-ht5">HT5</span></div>
-                </div>
-            </div>
-
-            <!-- Rank 8: ReptileEmperor -->
-            <div class="row">
-                <div class="rank">8.</div>
-                <div class="player-info">
-                    <img class="avatar" src="https://mc-heads.net/avatar/ReptileEmperor/40" alt="ReptileEmperor">
-                    <div class="player-details">
-                        <div class="player-name">ReptileEmperor</div>
-                        <div class="player-title">
-                            <span class="title-icon">❖</span> Retired (0 points)
-                        </div>
-                    </div>
-                </div>
-                <div class="region"><span>US</span></div>
-                <div class="tiers">
-                    <div class="tier-item"><div class="tier-icon">🗡️</div><span class="tier-retired">R-HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🪓</div><span class="tier-retired">R-HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔨</div><span class="tier-retired">R-HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">❤️</div><span class="tier-retired">R-HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">🔥</div><span class="tier-retired">R-LT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🧪</div><span class="tier-retired">R-LT2</span></div>
-                    <div class="tier-item"><div class="tier-icon">🌍</div><span class="tier-retired">R-HT1</span></div>
-                    <div class="tier-item"><div class="tier-icon">💎</div><span class="tier-retired">R-HT1</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PER-GAMEMODE TIER GRID VIEW -->
-        <div class="tier-grid" id="tier-view">
-            <div class="tier-col">
-                <div class="tier-col-header tier1-header"><span class="trophy">🏆</span>Tier 1</div>
-                <div id="col-tier1"></div>
-            </div>
-            <div class="tier-col">
-                <div class="tier-col-header tier2-header"><span class="trophy">🏆</span>Tier 2</div>
-                <div id="col-tier2"></div>
-            </div>
-            <div class="tier-col">
-                <div class="tier-col-header tier3-header"><span class="trophy">🏆</span>Tier 3</div>
-                <div id="col-tier3"></div>
-            </div>
-            <div class="tier-col">
-                <div class="tier-col-header tier4-header"><span class="trophy">🏆</span>Tier 4</div>
-                <div id="col-tier4"></div>
-            </div>
-            <div class="tier-col">
-                <div class="tier-col-header tier5-header"><span class="trophy">🏆</span>Tier 5</div>
-                <div id="col-tier5"></div>
-            </div>
-        </div>
+        <div id="overall-body"></div>
+        <div class="no-results" id="overall-no-results">No players found.</div>
     </div>
 
-    <script>
-        // Per-player, per-gamemode tier data. "-" = untested/no rank in that mode.
-        // "R-" prefix = retired rank (excluded from live tier columns).
-        const players = [
-            { name: "_Nitren",           sword: "LT1", axe: "HT1", mace: "HT1", uhc: "LT2", nethop: "HT3", pot: "LT2", smp: "HT2", vanilla: "HT4" },
-            { name: "Metalminer1267",   sword: "HT3", axe: "HT3", mace: "-",   uhc: "HT2", nethop: "LT3", pot: "HT4", smp: "HT4", vanilla: "HT3" },
-            { name: "TeamUnicornGirl",  sword: "LT1", axe: "LT2", mace: "HT3", uhc: "-",   nethop: "-",   pot: "-",   smp: "-",   vanilla: "-" },
-            { name: "Zapattack123",     sword: "HT3", axe: "-",   mace: "HT3", uhc: "-",   nethop: "-",   pot: "-",   smp: "-",   vanilla: "-" },
-            { name: "Lazygiraffe2197",  sword: "LT4", axe: "HT4", mace: "LT5", uhc: "LT5", nethop: "-",   pot: "-",   smp: "-",   vanilla: "LT5" },
-            { name: "MrRainbowoffical", sword: "LT4", axe: "LT4", mace: "LT5", uhc: "LT5", nethop: "LT5", pot: "-",   smp: "-",   vanilla: "-" },
-            { name: "Rorom2012",        sword: "R-HT3", axe: "-", mace: "HT5", uhc: "-",   nethop: "LT5", pot: "LT5", smp: "LT5", vanilla: "HT5" },
-            { name: "ReptileEmperor",   sword: "R-HT1", axe: "R-HT1", mace: "R-HT1", uhc: "R-HT1", nethop: "R-LT2", pot: "R-LT2", smp: "R-HT1", vanilla: "R-HT1" },
-        ];
+    <!-- PER-GAMEMODE TIER GRID VIEW -->
+    <div class="tier-grid" id="tier-view">
+        <div class="tier-col"><div class="tier-col-header tier1-header"><span>🏆</span>Tier 1</div><div id="col-tier1"></div></div>
+        <div class="tier-col"><div class="tier-col-header tier2-header"><span>🏆</span>Tier 2</div><div id="col-tier2"></div></div>
+        <div class="tier-col"><div class="tier-col-header tier3-header"><span>🏆</span>Tier 3</div><div id="col-tier3"></div></div>
+        <div class="tier-col"><div class="tier-col-header tier4-header"><span>🏆</span>Tier 4</div><div id="col-tier4"></div></div>
+        <div class="tier-col"><div class="tier-col-header tier5-header"><span>🏆</span>Tier 5</div><div id="col-tier5"></div></div>
+    </div>
+</div>
 
-        const tabs = document.querySelectorAll(".tab");
-        const overallView = document.getElementById("overall-view");
-        const tierView = document.getElementById("tier-view");
+<!-- PLAYER PROFILE MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal-card" id="modal-card"></div>
+</div>
 
-        function renderTierGrid(mode) {
-            for (let t = 1; t <= 5; t++) {
-                document.getElementById("col-tier" + t).innerHTML = "";
-            }
+<script>
+    // ---- Data (sourced from the "Minecraft PVP Rankings" slideshow, cross-checked against the points/title system slide) ----
+    const MODES = [
+        { key: "sword",   label: "Sword",   icon: "🗡️" },
+        { key: "axe",     label: "Axe",     icon: "🪓" },
+        { key: "mace",    label: "Mace",    icon: "🔨" },
+        { key: "uhc",     label: "UHC",     icon: "❤️" },
+        { key: "nethop",  label: "NethOP",  icon: "🔥" },
+        { key: "pot",     label: "Pot",     icon: "🧪" },
+        { key: "smp",     label: "SMP",     icon: "🌍" },
+        { key: "vanilla", label: "Vanilla", icon: "💎" },
+    ];
 
-            // LTMs has no source data yet
-            if (mode === "ltms") {
-                document.getElementById("col-tier1").innerHTML = '<div class="tier-empty">No LTM data yet</div>';
-                return;
-            }
+    const TITLE_LADDER = [
+        { name: "Grandmaster", min: 400, max: Infinity },
+        { name: "Master",      min: 250, max: 399 },
+        { name: "Ace",         min: 100, max: 249 },
+        { name: "Specialist",  min: 50,  max: 99 },
+        { name: "Cadet",       min: 20,  max: 49 },
+        { name: "Novice",      min: 10,  max: 19 },
+        { name: "Rookie",      min: 1,   max: 9 },
+    ];
 
-            const byTier = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+    function getTitle(points, allRetired) {
+        if (allRetired) return "Retired";
+        for (const rung of TITLE_LADDER) {
+            if (points >= rung.min && points <= rung.max) return "Combat " + rung.name;
+        }
+        return "Unranked";
+    }
 
-            players.forEach(p => {
-                const val = p[mode];
-                if (!val || val === "-" || val.startsWith("R-")) return; // skip untested/retired
-                const isHigh = val.startsWith("HT");
-                const tierNum = parseInt(val.slice(2));
-                byTier[tierNum].push({ name: p.name, high: isHigh });
-            });
+    const players = [
+        { name: "_Nitren", region: "NA", wins: 24, losses: 5, tourneysPlayed: 0, tourneysWon: 0, points: 249, average: "High Tier 2",
+          tiers: { sword: "LT1", axe: "HT1", mace: "HT1", uhc: "LT2", nethop: "HT3", pot: "LT2", smp: "HT2", vanilla: "HT4" } },
+        { name: "Metalminer1267", region: "NA", wins: 1, losses: 6, tourneysPlayed: 0, tourneysWon: 0, points: 74, average: "High Tier 3",
+          tiers: { sword: "HT3", axe: "HT3", mace: "-", uhc: "HT2", nethop: "LT3", pot: "HT4", smp: "HT4", vanilla: "HT3" } },
+        { name: "TeamUnicornGirl", region: "NA", wins: 1, losses: 1, tourneysPlayed: 0, tourneysWon: 0, points: 65, average: "High Tier 2",
+          tiers: { sword: "LT1", axe: "LT2", mace: "HT3", uhc: "-", nethop: "-", pot: "-", smp: "-", vanilla: "-" } },
+        { name: "Zapattack123", region: "NA", wins: 2, losses: 0, tourneysPlayed: 0, tourneysWon: 0, points: 20, average: "High Tier 3",
+          tiers: { sword: "HT3", axe: "-", mace: "HT3", uhc: "-", nethop: "-", pot: "-", smp: "-", vanilla: "-" } },
+        { name: "Lazygiraffe2197", region: "NA", wins: 0, losses: 4, tourneysPlayed: 0, tourneysWon: 0, points: 10, average: "High Tier 5",
+          tiers: { sword: "LT4", axe: "HT4", mace: "LT5", uhc: "LT5", nethop: "-", pot: "-", smp: "-", vanilla: "LT5" } },
+        { name: "MrRainbowoffical", region: "NA", wins: 0, losses: 6, tourneysPlayed: 0, tourneysWon: 0, points: 9, average: "High Tier 5",
+          tiers: { sword: "LT4", axe: "LT4", mace: "LT5", uhc: "LT5", nethop: "LT5", pot: "-", smp: "-", vanilla: "-" } },
+        { name: "Rorom2012", region: "NA", wins: 0, losses: 6, tourneysPlayed: 0, tourneysWon: 0, points: 6, average: "Low Tier 5",
+          tiers: { sword: "R-HT3", axe: "-", mace: "HT5", uhc: "-", nethop: "LT5", pot: "LT5", smp: "LT5", vanilla: "HT5" } },
+        { name: "ReptileEmperor", region: "NA", wins: 16, losses: 5, tourneysPlayed: 0, tourneysWon: 0, points: 0, average: "LT1",
+          tiers: { sword: "R-HT1", axe: "R-HT1", mace: "R-HT1", uhc: "R-HT1", nethop: "R-LT2", pot: "R-LT2", smp: "R-HT1", vanilla: "R-HT1" } },
+    ];
 
-            for (let t = 1; t <= 5; t++) {
-                const col = document.getElementById("col-tier" + t);
-                const list = byTier[t].sort((a, b) => (b.high - a.high));
-                if (list.length === 0) {
-                    col.innerHTML = '<div class="tier-empty">No players</div>';
-                    continue;
-                }
-                list.forEach(entry => {
-                    const row = document.createElement("div");
-                    row.className = "tier-player";
-                    row.innerHTML = '<img class="avatar" src="https://mc-heads.net/avatar/' + entry.name + '/24" alt="' + entry.name + '"><span>' + entry.name + '</span>' +
-                        (entry.high ? '<span class="high-badge">HIGH</span>' : '');
-                    col.appendChild(row);
-                });
-            }
+    // Derive title + games played + "all retired" flag for each player
+    players.forEach(p => {
+        p.games = p.wins + p.losses;
+        p.allRetired = Object.values(p.tiers).every(v => v === "-" || v.startsWith("R-"));
+        p.title = getTitle(p.points, p.allRetired);
+    });
+    players.sort((a, b) => b.points - a.points);
+    const playerByName = {};
+    players.forEach(p => playerByName[p.name] = p);
+
+    function avatarUrl(name, size) {
+        return "https://mc-heads.net/avatar/" + encodeURIComponent(name) + "/" + size;
+    }
+
+    function tierClass(val) {
+        if (!val || val === "-") return "tier-none";
+        if (val.startsWith("R-")) return "tier-retired";
+        return "tier-" + val.toLowerCase();
+    }
+    function tierLabel(val) {
+        if (!val || val === "-") return "-";
+        if (val.startsWith("R-")) return val;
+        return val;
+    }
+
+    // ---- Render: Overall list ----
+    function renderOverall() {
+        const body = document.getElementById("overall-body");
+        body.innerHTML = "";
+        players.forEach((p, i) => {
+            const rank = i + 1;
+            const rankClass = rank <= 3 ? " rank-" + rank : "";
+            const row = document.createElement("div");
+            row.className = "row" + rankClass;
+            row.dataset.player = p.name;
+            row.onclick = () => openProfile(p.name);
+
+            const tiersHtml = MODES.map(m => {
+                const val = p.tiers[m.key];
+                return '<div class="tier-item"><div class="tier-icon">' + m.icon + '</div><span class="' + tierClass(val) + '">' + tierLabel(val) + '</span></div>';
+            }).join("");
+
+            row.innerHTML =
+                '<div class="rank">' + (rank <= 3 ? '<div class="rank-bg"></div>' : '') + rank + '.</div>' +
+                '<div class="player-info">' +
+                    '<img class="avatar" src="' + avatarUrl(p.name, 40) + '" alt="' + p.name + '">' +
+                    '<div class="player-details">' +
+                        '<div class="player-name">' + p.name + '</div>' +
+                        '<div class="player-title"><span class="title-icon">❖</span> ' + p.title + ' (' + p.points + ' points)</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="region"><span>' + p.region + '</span></div>' +
+                '<div class="tiers">' + tiersHtml + '</div>';
+            body.appendChild(row);
+        });
+    }
+
+    // ---- Render: per-gamemode tier grid ----
+    function renderTierGrid(mode) {
+        for (let t = 1; t <= 5; t++) document.getElementById("col-tier" + t).innerHTML = "";
+
+        if (mode === "ltms") {
+            document.getElementById("col-tier1").innerHTML = '<div class="tier-empty">No LTM data yet</div>';
+            return;
         }
 
-        tabs.forEach(tab => {
-            tab.addEventListener("click", () => {
-                tabs.forEach(t => t.classList.remove("active"));
-                tab.classList.add("active");
-                const mode = tab.dataset.mode;
-
-                if (mode === "overall") {
-                    overallView.style.display = "";
-                    tierView.classList.remove("active");
-                } else {
-                    overallView.style.display = "none";
-                    tierView.classList.add("active");
-                    renderTierGrid(mode);
-                }
-            });
+        const byTier = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+        players.forEach(p => {
+            const val = p.tiers[mode];
+            if (!val || val === "-" || val.startsWith("R-")) return;
+            const isHigh = val.startsWith("HT");
+            const tierNum = parseInt(val.slice(2));
+            byTier[tierNum].push({ name: p.name, high: isHigh });
         });
-    </script>
+
+        for (let t = 1; t <= 5; t++) {
+            const col = document.getElementById("col-tier" + t);
+            const list = byTier[t].sort((a, b) => b.high - a.high);
+            if (list.length === 0) {
+                col.innerHTML = '<div class="tier-empty">No players</div>';
+                continue;
+            }
+            list.forEach(entry => {
+                const row = document.createElement("div");
+                row.className = "tier-player";
+                row.dataset.player = entry.name;
+                row.onclick = () => openProfile(entry.name);
+                row.innerHTML =
+                    '<img class="avatar" src="' + avatarUrl(entry.name, 24) + '" alt="' + entry.name + '">' +
+                    '<span>' + entry.name + '</span>' +
+                    (entry.high ? '<span class="high-badge">HIGH</span>' : '');
+                col.appendChild(row);
+            });
+        }
+    }
+
+    // ---- Player profile modal ----
+    function openProfile(name) {
+        const p = playerByName[name];
+        if (!p) return;
+
+        const ladderHtml = TITLE_LADDER.map(rung => {
+            const isCurrent = !p.allRetired && p.points >= rung.min && p.points <= rung.max;
+            const range = rung.max === Infinity ? rung.min + "+" : rung.min + "–" + rung.max;
+            return '<div class="title-rung' + (isCurrent ? ' current' : '') + '"><span>' + rung.name + '</span><span>' + range + ' points</span></div>';
+        }).join("");
+
+        const tiersHtml = MODES.map(m => {
+            const val = p.tiers[m.key];
+            return '<div class="modal-tier-item">' +
+                '<div class="mode-icon">' + m.icon + '</div>' +
+                '<div class="mode-label">' + m.label + '</div>' +
+                '<div class="mode-val ' + tierClass(val) + '">' + tierLabel(val) + '</div>' +
+                '</div>';
+        }).join("");
+
+        document.getElementById("modal-card").innerHTML =
+            '<div class="modal-header">' +
+                '<button class="modal-close" onclick="closeProfile()">✕</button>' +
+                '<img class="modal-avatar" src="' + avatarUrl(p.name, 72) + '" alt="' + p.name + '">' +
+                '<div>' +
+                    '<div class="modal-name">' + p.name + '</div>' +
+                    '<div class="modal-title-row"><span>❖</span><span>' + p.title + ' — ' + p.points + ' points</span></div>' +
+                    '<div class="modal-region region"><span>' + p.region + '</span></div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="stat-grid">' +
+                '<div class="stat-box"><div class="stat-value">' + p.wins + '</div><div class="stat-label">Wins</div></div>' +
+                '<div class="stat-box"><div class="stat-value">' + p.losses + '</div><div class="stat-label">Losses</div></div>' +
+                '<div class="stat-box"><div class="stat-value">' + p.games + '</div><div class="stat-label">Games Played</div></div>' +
+                '<div class="stat-box"><div class="stat-value">' + p.average + '</div><div class="stat-label">Average Tier</div></div>' +
+            '</div>' +
+            '<div class="modal-section">' +
+                '<div class="modal-section-title">Tournaments</div>' +
+                '<div class="stat-grid" style="grid-template-columns: repeat(2, 1fr);">' +
+                    '<div class="stat-box"><div class="stat-value">' + p.tourneysPlayed + '</div><div class="stat-label">Tourneys Played</div></div>' +
+                    '<div class="stat-box"><div class="stat-value">' + p.tourneysWon + '</div><div class="stat-label">Tourneys Won</div></div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="modal-section">' +
+                '<div class="modal-section-title">Leaderboard Title</div>' +
+                '<div class="title-ladder">' + ladderHtml + '</div>' +
+            '</div>' +
+            '<div class="modal-section">' +
+                '<div class="modal-section-title">Combat Tiers</div>' +
+                '<div class="modal-tiers">' + tiersHtml + '</div>' +
+            '</div>';
+
+        document.getElementById("modal-overlay").classList.add("open");
+    }
+    function closeProfile() {
+        document.getElementById("modal-overlay").classList.remove("open");
+    }
+    document.getElementById("modal-overlay").addEventListener("click", (e) => {
+        if (e.target.id === "modal-overlay") closeProfile();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeProfile();
+    });
+
+    // ---- Tabs ----
+    let currentMode = "overall";
+    const tabs = document.querySelectorAll(".tab");
+    const overallView = document.getElementById("overall-view");
+    const tierView = document.getElementById("tier-view");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            currentMode = tab.dataset.mode;
+
+            if (currentMode === "overall") {
+                overallView.style.display = "";
+                tierView.classList.remove("active");
+            } else {
+                overallView.style.display = "none";
+                tierView.classList.add("active");
+                renderTierGrid(currentMode);
+            }
+            applySearch();
+        });
+    });
+
+    // ---- Search ----
+    const searchInput = document.getElementById("search-input");
+    const searchClear = document.getElementById("search-clear");
+
+    function applySearch() {
+        const q = searchInput.value.trim().toLowerCase();
+        searchClear.style.display = q ? "block" : "none";
+
+        if (currentMode === "overall") {
+            let visibleCount = 0;
+            document.querySelectorAll("#overall-body .row").forEach(row => {
+                const match = row.dataset.player.toLowerCase().includes(q);
+                row.classList.toggle("hidden-row", !match);
+                if (match) visibleCount++;
+            });
+            document.getElementById("overall-no-results").classList.toggle("show", visibleCount === 0 && q !== "");
+        } else {
+            document.querySelectorAll(".tier-player").forEach(row => {
+                const match = row.dataset.player.toLowerCase().includes(q);
+                row.classList.toggle("hidden-row", !match);
+            });
+        }
+    }
+    searchInput.addEventListener("input", applySearch);
+    searchClear.addEventListener("click", () => {
+        searchInput.value = "";
+        applySearch();
+        searchInput.focus();
+    });
+
+    // ---- Init ----
+    renderOverall();
+</script>
 </body>
 </html>
