@@ -16,7 +16,7 @@ function matches(password, stored) {
 async function users() {
   let value = await store.get("users", { type: "json" });
   if (!value) {
-    value = [{ username: "admin", role: "master", password: hashPassword(process.env.MASTER_PASSWORD || "change-me-please") }];
+    value = [{ username: "admin", role: "master", password: hashPassword(process.env.MASTER_PASSWORD || "admin") }];
     await store.setJSON("users", value);
   }
   return value;
@@ -37,6 +37,7 @@ function input(event) {
 }
 
 export async function handler(event) {
+ try {
   const route = event.path.replace(/^\/\.netlify\/functions\/api/, "").replace(/^\/api/, "") || "/";
   if (route === "/leaderboards" && event.httpMethod === "GET") return response(200, leaderboardData);
   if (route === "/me" && event.httpMethod === "GET") return response(200, { user: currentUser(event) || null });
@@ -61,4 +62,8 @@ export async function handler(event) {
   if (passwordMatch && event.httpMethod === "PATCH") { if (!requireMaster(event)) return response(401, { error: "Authentication required" }); const username = decodeURIComponent(passwordMatch[1]); const data = input(event); if ((data?.password || "").length < 8) return response(400, { error: "Password must be at least 8 characters" }); const list = await users(); const account = list.find(user => user.username === username && user.role === "editor"); if (!account) return response(404, { error: "Editor account not found" }); account.password = hashPassword(data.password); await store.setJSON("users", list); return response(200, { username, ok: true }); }
   if (route === "/me/password" && event.httpMethod === "PATCH") { const session = requireMaster(event); if (!session) return response(401, { error: "Authentication required" }); const data = input(event); const list = await users(); const account = list.find(user => user.username === session.username); if (!account || !matches(data?.currentPassword || "", account.password)) return response(401, { error: "Current password is incorrect" }); if ((data?.newPassword || "").length < 8) return response(400, { error: "New password must be at least 8 characters" }); account.password = hashPassword(data.newPassword); await store.setJSON("users", list); return response(200, { ok: true }); }
   return response(404, { error: "API route not found" });
+ } catch (error) {
+  console.error("PVP Hub API error", error);
+  return response(500, { error: "Account service is unavailable. Check Netlify Blobs configuration." });
+ }
 }
