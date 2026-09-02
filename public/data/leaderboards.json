@@ -17,7 +17,7 @@
     {
       "name": "TeamUnicornGirl",
       "region": "US",
-      "title": "Combat Ace",
+      "title": "Combat Specialist",
       "points": 100,
       "sword": "HT1",
       "axe": "LT2",
@@ -29,9 +29,23 @@
       "vanilla": "-"
     },
     {
-      "name": "Metalminer1267",
+      "name": "Zapattack123",
       "region": "US",
       "title": "Cadet",
+      "points": 46,
+      "sword": "HT3",
+      "axe": "HT3",
+      "mace": "-",
+      "uhc": "-",
+      "nethop": "-",
+      "pot": "HT3",
+      "smp": "HT3",
+      "vanilla": "LT3"
+    },
+    {
+      "name": "Metalminer1267",
+      "region": "US",
+      "title": "Specialist",
       "points": 44,
       "sword": "R-HT3",
       "axe": "R-HT3",
@@ -41,20 +55,6 @@
       "pot": "HT4",
       "smp": "HT4",
       "vanilla": "R-HT3"
-    },
-    {
-      "name": "Zapattack123",
-      "region": "US",
-      "title": "Cadet",
-      "points": 20,
-      "sword": "HT3",
-      "axe": "-",
-      "mace": "HT3",
-      "uhc": "-",
-      "nethop": "-",
-      "pot": "-",
-      "smp": "-",
-      "vanilla": "-"
     },
     {
       "name": "Lazygiraffe2197",
