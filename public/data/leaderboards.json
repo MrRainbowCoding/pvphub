@@ -4,14 +4,14 @@
       "name": "_Nitren",
       "region": "US",
       "title": "Combat Ace",
-      "points": 199,
+      "points": 249,
       "sword": "LT1",
       "axe": "HT1",
       "mace": "HT1",
       "uhc": "LT2",
       "nethop": "HT3",
-      "pot": "R-LT2",
-      "smp": "R-HT2",
+      "pot": "LT2",
+      "smp": "HT2",
       "vanilla": "HT4",
       "titleMode": "auto"
     },
@@ -31,6 +31,21 @@
       "titleMode": "auto"
     },
     {
+      "name": "Metalminer1267",
+      "region": "US",
+      "title": "Cadet",
+      "points": 74,
+      "sword": "HT3",
+      "axe": "HT3",
+      "mace": "-",
+      "uhc": "HT2",
+      "nethop": "LT3",
+      "pot": "HT4",
+      "smp": "HT4",
+      "vanilla": "HT3",
+      "titleMode": "auto"
+    },
+    {
       "name": "Zapattack123",
       "region": "US",
       "title": "Cadet",
@@ -43,21 +58,6 @@
       "pot": "HT3",
       "smp": "HT3",
       "vanilla": "LT3",
-      "titleMode": "auto"
-    },
-    {
-      "name": "Metalminer1267",
-      "region": "US",
-      "title": "Cadet",
-      "points": 44,
-      "sword": "R-HT3",
-      "axe": "R-HT3",
-      "mace": "-",
-      "uhc": "HT2",
-      "nethop": "LT3",
-      "pot": "HT4",
-      "smp": "HT4",
-      "vanilla": "R-HT3",
       "titleMode": "auto"
     },
     {
@@ -103,7 +103,7 @@
       "pot": "LT5",
       "smp": "LT5",
       "vanilla": "HT5",
-      "titleMode": "auto"
+      "titleMode": "retired"
     },
     {
       "name": "ReptileEmperor",
