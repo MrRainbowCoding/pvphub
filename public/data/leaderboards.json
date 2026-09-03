@@ -12,7 +12,8 @@
       "nethop": "HT3",
       "pot": "R-LT2",
       "smp": "R-HT2",
-      "vanilla": "HT4"
+      "vanilla": "HT4",
+      "titleMode": "auto"
     },
     {
       "name": "TeamUnicornGirl",
@@ -26,7 +27,8 @@
       "nethop": "-",
       "pot": "-",
       "smp": "-",
-      "vanilla": "-"
+      "vanilla": "-",
+      "titleMode": "auto"
     },
     {
       "name": "Zapattack123",
@@ -40,7 +42,8 @@
       "nethop": "-",
       "pot": "HT3",
       "smp": "HT3",
-      "vanilla": "LT3"
+      "vanilla": "LT3",
+      "titleMode": "auto"
     },
     {
       "name": "Metalminer1267",
@@ -54,7 +57,8 @@
       "nethop": "LT3",
       "pot": "HT4",
       "smp": "HT4",
-      "vanilla": "R-HT3"
+      "vanilla": "R-HT3",
+      "titleMode": "auto"
     },
     {
       "name": "Lazygiraffe2197",
@@ -68,7 +72,8 @@
       "nethop": "-",
       "pot": "-",
       "smp": "-",
-      "vanilla": "LT5"
+      "vanilla": "LT5",
+      "titleMode": "auto"
     },
     {
       "name": "MrRainbowoffical",
@@ -82,7 +87,8 @@
       "nethop": "LT5",
       "pot": "-",
       "smp": "-",
-      "vanilla": "-"
+      "vanilla": "-",
+      "titleMode": "auto"
     },
     {
       "name": "Rorom2012",
@@ -96,7 +102,8 @@
       "nethop": "LT5",
       "pot": "LT5",
       "smp": "LT5",
-      "vanilla": "HT5"
+      "vanilla": "HT5",
+      "titleMode": "auto"
     },
     {
       "name": "ReptileEmperor",
@@ -110,7 +117,8 @@
       "nethop": "R-LT2",
       "pot": "R-LT2",
       "smp": "R-HT1",
-      "vanilla": "R-HT1"
+      "vanilla": "R-HT1",
+      "titleMode": "retired"
     }
   ]
 }
