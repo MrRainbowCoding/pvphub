@@ -8,5 +8,10 @@
     "username": "nitren",
     "role": "editor",
     "password": "scrypt$84c74e9712a78633729a356e82e9f1c2$cc02e609e5aa6a61c58ee327de10bb6965ade490ea314dab514ffb9ffc423ba3d163430df72faa75b3231b87308719c96e24e26cda1b71225edba59c44ae7e38"
+  },
+  {
+    "username": "Metalgunner117",
+    "role": "editor",
+    "password": "scrypt$0e9d4db9019b417f1009fd33d137f9fc$eba7a75520dbc6fe159bb61064aaf774ca61adb178ac29529b633f012939812598b6cb8d6438ba869060a3785df8b7dcddb6d6a685a252a25d8de5416f03ba6d"
   }
 ]
