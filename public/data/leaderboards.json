@@ -16,6 +16,22 @@
       "titleMode": "auto"
     },
     {
+      "name": "ReptileEmperor",
+      "region": "US",
+      "title": "Retired",
+      "points": 140,
+      "sword": "R-HT1",
+      "axe": "LT1",
+      "mace": "HT2",
+      "uhc": "R-HT1",
+      "nethop": "HT3",
+      "pot": "HT3",
+      "smp": "LT1",
+      "vanilla": "R-HT1",
+      "titleMode": "auto",
+      "customTitle": "Specialist"
+    },
+    {
       "name": "TeamUnicornGirl",
       "region": "US",
       "title": "Combat Ace",
@@ -29,22 +45,6 @@
       "smp": "-",
       "vanilla": "-",
       "titleMode": "auto"
-    },
-    {
-      "name": "ReptileEmperor",
-      "region": "US",
-      "title": "Retired",
-      "points": 95,
-      "sword": "R-HT1",
-      "axe": "LT1",
-      "mace": "HT2",
-      "uhc": "R-HT1",
-      "nethop": "HT3",
-      "pot": "HT3",
-      "smp": "R-HT1",
-      "vanilla": "R-HT1",
-      "titleMode": "auto",
-      "customTitle": "Specialist"
     },
     {
       "name": "Metalminer1267",
