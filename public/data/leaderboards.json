@@ -31,6 +31,22 @@
       "titleMode": "auto"
     },
     {
+      "name": "ReptileEmperor",
+      "region": "US",
+      "title": "Retired",
+      "points": 95,
+      "sword": "R-HT1",
+      "axe": "LT1",
+      "mace": "HT2",
+      "uhc": "R-HT1",
+      "nethop": "HT3",
+      "pot": "HT3",
+      "smp": "R-HT1",
+      "vanilla": "R-HT1",
+      "titleMode": "auto",
+      "customTitle": "Specialist"
+    },
+    {
       "name": "Metalminer1267",
       "region": "US",
       "title": "Cadet",
@@ -103,21 +119,6 @@
       "pot": "LT5",
       "smp": "LT5",
       "vanilla": "HT5",
-      "titleMode": "retired"
-    },
-    {
-      "name": "ReptileEmperor",
-      "region": "US",
-      "title": "Retired",
-      "points": 0,
-      "sword": "R-HT1",
-      "axe": "R-HT1",
-      "mace": "R-HT1",
-      "uhc": "R-HT1",
-      "nethop": "R-LT2",
-      "pot": "R-LT2",
-      "smp": "R-HT1",
-      "vanilla": "R-HT1",
       "titleMode": "retired"
     }
   ]
