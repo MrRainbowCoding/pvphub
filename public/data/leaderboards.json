@@ -92,6 +92,21 @@
       "titleMode": "auto"
     },
     {
+      "name": "Jamess2012",
+      "region": "US",
+      "titleMode": "auto",
+      "customTitle": "",
+      "points": 10,
+      "sword": "-",
+      "axe": "-",
+      "mace": "HT3",
+      "uhc": "-",
+      "nethop": "-",
+      "pot": "-",
+      "smp": "-",
+      "vanilla": "-"
+    },
+    {
       "name": "MrRainbowoffical",
       "region": "US",
       "title": "Novice",
