@@ -19,8 +19,8 @@
       "name": "ReptileEmperor",
       "region": "US",
       "title": "Retired",
-      "points": 185,
-      "sword": "R-HT1",
+      "points": 230,
+      "sword": "LT1",
       "axe": "LT1",
       "mace": "HT2",
       "uhc": "LT1",
@@ -77,6 +77,21 @@
       "titleMode": "auto"
     },
     {
+      "name": "Jamess2012",
+      "region": "CA",
+      "titleMode": "auto",
+      "customTitle": "",
+      "points": 16,
+      "sword": "LT3",
+      "axe": "-",
+      "mace": "HT3",
+      "uhc": "-",
+      "nethop": "-",
+      "pot": "-",
+      "smp": "-",
+      "vanilla": "-"
+    },
+    {
       "name": "Lazygiraffe2197",
       "region": "US",
       "title": "Combat Novice",
@@ -90,21 +105,6 @@
       "smp": "-",
       "vanilla": "LT5",
       "titleMode": "auto"
-    },
-    {
-      "name": "Jamess2012",
-      "region": "US",
-      "titleMode": "auto",
-      "customTitle": "",
-      "points": 10,
-      "sword": "-",
-      "axe": "-",
-      "mace": "HT3",
-      "uhc": "-",
-      "nethop": "-",
-      "pot": "-",
-      "smp": "-",
-      "vanilla": "-"
     },
     {
       "name": "MrRainbowoffical",
