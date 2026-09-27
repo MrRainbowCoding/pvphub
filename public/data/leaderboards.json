@@ -1,12 +1,28 @@
 {
   "players": [
     {
+      "name": "ReptileEmperor",
+      "region": "US",
+      "title": "Retired",
+      "points": 255,
+      "sword": "LT1",
+      "axe": "HT1",
+      "mace": "HT2",
+      "uhc": "LT1",
+      "nethop": "HT3",
+      "pot": "HT3",
+      "smp": "LT1",
+      "vanilla": "HT3",
+      "titleMode": "auto",
+      "customTitle": "Specialist"
+    },
+    {
       "name": "_Nitren",
       "region": "US",
       "title": "Combat Ace",
-      "points": 269,
+      "points": 254,
       "sword": "LT1",
-      "axe": "HT1",
+      "axe": "LT1",
       "mace": "HT1",
       "uhc": "LT2",
       "nethop": "HT2",
@@ -14,22 +30,6 @@
       "smp": "HT2",
       "vanilla": "HT4",
       "titleMode": "auto"
-    },
-    {
-      "name": "ReptileEmperor",
-      "region": "US",
-      "title": "Retired",
-      "points": 230,
-      "sword": "LT1",
-      "axe": "LT1",
-      "mace": "HT2",
-      "uhc": "LT1",
-      "nethop": "HT3",
-      "pot": "HT3",
-      "smp": "LT1",
-      "vanilla": "R-HT1",
-      "titleMode": "auto",
-      "customTitle": "Specialist"
     },
     {
       "name": "TeamUnicornGirl",
