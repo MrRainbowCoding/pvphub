@@ -32,7 +32,7 @@
       "titleMode": "auto"
     },
     {
-      "name": "TeamUnicornGirl",
+      "name": "ItzEchoo_",
       "region": "US",
       "title": "Combat Ace",
       "points": 100,
@@ -81,12 +81,12 @@
       "region": "CA",
       "titleMode": "auto",
       "customTitle": "",
-      "points": 16,
+      "points": 36,
       "sword": "LT3",
       "axe": "-",
-      "mace": "HT3",
+      "mace": "LT2",
       "uhc": "-",
-      "nethop": "-",
+      "nethop": "HT3",
       "pot": "-",
       "smp": "-",
       "vanilla": "-"
