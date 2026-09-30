@@ -4,7 +4,7 @@
       "name": "ReptileEmperor",
       "region": "US",
       "title": "Retired",
-      "points": 255,
+      "points": 257,
       "sword": "LT1",
       "axe": "HT1",
       "mace": "HT2",
@@ -14,13 +14,15 @@
       "smp": "LT1",
       "vanilla": "HT3",
       "titleMode": "auto",
-      "customTitle": "Specialist"
+      "customTitle": "Specialist",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "_Nitren",
       "region": "US",
       "title": "Combat Ace",
-      "points": 254,
+      "points": 256,
       "sword": "LT1",
       "axe": "LT1",
       "mace": "HT1",
@@ -29,13 +31,15 @@
       "pot": "LT2",
       "smp": "HT2",
       "vanilla": "HT4",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "ItzEchoo_",
       "region": "US",
       "title": "Combat Ace",
-      "points": 100,
+      "points": 102,
       "sword": "HT1",
       "axe": "LT2",
       "mace": "LT2",
@@ -44,13 +48,15 @@
       "pot": "-",
       "smp": "-",
       "vanilla": "-",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "Metalminer1267",
       "region": "US",
       "title": "Cadet",
-      "points": 74,
+      "points": 76,
       "sword": "HT3",
       "axe": "HT3",
       "mace": "-",
@@ -59,13 +65,15 @@
       "pot": "HT4",
       "smp": "HT4",
       "vanilla": "HT3",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "Zapattack123",
       "region": "US",
       "title": "Cadet",
-      "points": 46,
+      "points": 48,
       "sword": "HT3",
       "axe": "HT3",
       "mace": "-",
@@ -74,14 +82,16 @@
       "pot": "HT3",
       "smp": "HT3",
       "vanilla": "LT3",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "Jamess2010",
       "region": "CA",
       "titleMode": "auto",
       "customTitle": "",
-      "points": 36,
+      "points": 38,
       "sword": "LT3",
       "axe": "-",
       "mace": "LT2",
@@ -89,13 +99,15 @@
       "nethop": "HT3",
       "pot": "-",
       "smp": "-",
-      "vanilla": "-"
+      "vanilla": "-",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "Lazygiraffe2197",
       "region": "US",
       "title": "Combat Novice",
-      "points": 17,
+      "points": 19,
       "sword": "LT4",
       "axe": "LT3",
       "mace": "LT5",
@@ -104,13 +116,15 @@
       "pot": "LT5",
       "smp": "LT4",
       "vanilla": "LT5",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "MrRainbowoffical",
       "region": "US",
       "title": "Novice",
-      "points": 9,
+      "points": 11,
       "sword": "LT4",
       "axe": "LT4",
       "mace": "LT5",
@@ -119,13 +133,15 @@
       "pot": "-",
       "smp": "-",
       "vanilla": "-",
-      "titleMode": "auto"
+      "titleMode": "auto",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     },
     {
       "name": "Rorom2012",
       "region": "US",
       "title": "Rookie",
-      "points": 7,
+      "points": 9,
       "sword": "R-HT3",
       "axe": "-",
       "mace": "HT5",
@@ -134,7 +150,9 @@
       "pot": "LT5",
       "smp": "LT5",
       "vanilla": "HT5",
-      "titleMode": "retired"
+      "titleMode": "retired",
+      "dsmp": "LT5",
+      "msmp": "LT5"
     }
   ]
 }
