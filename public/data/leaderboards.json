@@ -70,23 +70,6 @@
       "msmp": "-"
     },
     {
-      "name": "Zapattack123",
-      "region": "US",
-      "title": "Cadet",
-      "points": 46,
-      "sword": "HT3",
-      "axe": "HT3",
-      "mace": "-",
-      "uhc": "-",
-      "nethop": "-",
-      "pot": "HT3",
-      "smp": "HT3",
-      "vanilla": "LT3",
-      "titleMode": "auto",
-      "dsmp": "-",
-      "msmp": "-"
-    },
-    {
       "name": "Jamess2010",
       "region": "CA",
       "titleMode": "auto",
@@ -119,6 +102,23 @@
       "titleMode": "auto",
       "dsmp": "HT5",
       "msmp": "LT4"
+    },
+    {
+      "name": "Zapattack123",
+      "region": "US",
+      "title": "Cadet",
+      "points": 20,
+      "sword": "HT4",
+      "axe": "HT4",
+      "mace": "-",
+      "uhc": "-",
+      "nethop": "-",
+      "pot": "HT4",
+      "smp": "HT4",
+      "vanilla": "HT4",
+      "titleMode": "auto",
+      "dsmp": "-",
+      "msmp": "-"
     },
     {
       "name": "MrRainbowoffical",
